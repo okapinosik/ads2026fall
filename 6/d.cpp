@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Date { int d, m, y, x;};
+void quick(vector<Date>& a, int l, int r) {
+    int i = l, j = r, p = a[(l+r)/2].x;
+    while(i <= j) {
+        while(a[i].x < p) i++;
+        while(a[j].x > p) j--;
+        if(i <= j) swap(a[i++], a[j--]);
+    }
+    if(l < j) quick(a, l, j);
+    if(i < r) quick(a, i, r);
+}
+int main() {
+    int n; cin >> n;
+    vector<Date> a(n);
+    for(auto& x : a) {
+        string s; cin >> s;
+        x.d = stoi(s.substr(0,2));
+        x.m = stoi(s.substr(3,2));
+        x.y = stoi(s.substr(6,4));
+        x.x = x.y * 10000 + x.m * 100 + x.d;
+    }
+    quick(a, 0, n-1);
+    for(auto x : a) printf("%02d-%02d-%04d\n", x.d, x.m, x.y); 
+    return 0;
+}
